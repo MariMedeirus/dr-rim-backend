@@ -1,6 +1,7 @@
 package com.app.drrim.services;
 
 import com.app.drrim.domain.User;
+import com.app.drrim.dto.UserDTO;
 import com.app.drrim.repository.UserRepository;
 import com.app.drrim.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,13 @@ public class UserService {
     public User findById(String id){
         return repo.findById(id)
         .orElseThrow(() -> new ObjectNotFoundException("Object not found with id: " + id));
+    }
+
+    public User insert(User obj){
+       return repo.insert(obj);
+    }
+
+    public User fromDTO(UserDTO objDTO){
+        return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
     }
 }

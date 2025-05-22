@@ -1,12 +1,16 @@
 package com.app.drrim.config;
 
+import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
+import com.app.drrim.repository.PostRepository;
 import com.app.drrim.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.TimeZone;
 
 @Configuration
 public class Instantiation implements CommandLineRunner {
@@ -14,15 +18,26 @@ public class Instantiation implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
         userRepository.deleteAll();
+        postRepository.deleteAll();
 
         User alice = new User(null, "Alice Souza", "alice.souza@example.com");
         User bruno = new User(null, "Bruno Lima", "bruno.lima@example.com");
         User carla = new User(null, "Carla Mendes", "carla.mendes@example.com");
 
+        Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu férias", "Vou viajar para o Rio!", alice);
+        Post post2 = new Post(null, sdf.parse("19/03/2018"), "Boa noite", "Boa noite e que Deus abençoe!", bruno);
+
         userRepository.saveAll(Arrays.asList(alice, bruno, carla));
+        postRepository.saveAll(Arrays.asList(post1, post2));
     }
 }

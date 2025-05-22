@@ -2,6 +2,7 @@ package com.app.drrim.domain;
 
 import com.app.drrim.dto.AuthorDTO;
 import com.app.drrim.dto.CommentDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +27,9 @@ public class Post implements Serializable {
     @EqualsAndHashCode.Include
     private String id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date date;
+
     private String title;
     private String body;
     private AuthorDTO author;

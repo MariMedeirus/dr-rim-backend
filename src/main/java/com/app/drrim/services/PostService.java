@@ -24,4 +24,9 @@ public class PostService {
         return repo.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Object not found with id: " + id));
     }
+
+    public Post insert(Post obj) {
+        obj.setId(null);
+        return repo.save(obj);
+    }
 }

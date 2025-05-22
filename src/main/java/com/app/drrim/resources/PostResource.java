@@ -6,11 +6,9 @@ import com.app.drrim.dto.UserDTO;
 import com.app.drrim.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,5 +28,12 @@ public class PostResource {
     public ResponseEntity<Post> findById(@PathVariable String id){
         Post obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @PostMapping
+    public ResponseEntity<Post> insert(@RequestBody Post obj) {
+        Post newObj = service.insert(obj);
+        URI uri = URI.create("/posts/" + newObj.getId());
+        return ResponseEntity.created(uri).body(newObj);
     }
 }

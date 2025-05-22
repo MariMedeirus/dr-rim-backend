@@ -3,6 +3,7 @@ package com.app.drrim.config;
 import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.AuthorDTO;
+import com.app.drrim.dto.CommentDTO;
 import com.app.drrim.repository.PostRepository;
 import com.app.drrim.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,13 @@ public class Instantiation implements CommandLineRunner {
 
         Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu férias", "Vou viajar para o Rio!", new AuthorDTO(alice));
         Post post2 = new Post(null, sdf.parse("19/03/2018"), "Boa noite", "Boa noite e que Deus abençoe!", new AuthorDTO(alice));
+
+        CommentDTO c1= new CommentDTO("Boa Viagem!",sdf.parse("21/03/2018") , new AuthorDTO(bruno));
+        CommentDTO c2= new CommentDTO("Aproveita!",sdf.parse("21/03/2018") , new AuthorDTO(carla));
+        CommentDTO c3= new CommentDTO("Boa noite",sdf.parse("21/03/2018") , new AuthorDTO(bruno));
+
+        post1.getComments().addAll(Arrays.asList(c1, c2));
+        post2.getComments().addAll(Arrays.asList(c3));
 
         postRepository.saveAll(Arrays.asList(post1, post2));
 

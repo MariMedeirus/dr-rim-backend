@@ -2,8 +2,11 @@ package com.app.drrim.resources;
 
 import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
+import com.app.drrim.dto.LoginDTO;
 import com.app.drrim.dto.UserDTO;
+import com.app.drrim.repository.UserRepository;
 import com.app.drrim.services.UserService;
+import com.app.drrim.services.exception.LoginException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +63,19 @@ public class UserResource {
         User obj = service.findById(id);
         return ResponseEntity.ok().body(obj.getPosts());
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        try {
+            User user = service.login(loginDTO);
+            return ResponseEntity.ok(user);
+        } catch (LoginException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro interno no servidor");
+        }
+    }
+
+
+
 }

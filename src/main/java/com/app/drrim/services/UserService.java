@@ -1,11 +1,15 @@
 package com.app.drrim.services;
 
 import com.app.drrim.domain.User;
+import com.app.drrim.dto.LoginDTO;
 import com.app.drrim.dto.UserDTO;
 import com.app.drrim.repository.UserRepository;
+import com.app.drrim.services.exception.LoginException;
 import com.app.drrim.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -42,9 +46,15 @@ public class UserService {
     private void updateData(User newObj, User obj) {
         newObj.setName(obj.getName());
         newObj.setEmail(obj.getEmail());
-        newObj.setEmail(obj.getCpf());
-        newObj.setEmail(obj.getTelephone());
-        newObj.setEmail(obj.getPassword());
+        newObj.setCpf(obj.getCpf());
+        newObj.setTelephone(obj.getTelephone());
+        newObj.setPassword(obj.getPassword());
+    }
+
+    public User login(LoginDTO loginDTO) {
+        return repo.findByEmail(loginDTO.getEmail())
+                .filter(user -> user.getPassword().equals(loginDTO.getPassword()))
+                .orElseThrow(() -> new LoginException("Email ou senha inválidos"));
     }
 
 

@@ -21,13 +21,19 @@ public class User implements Serializable {
     private String id;
     private String name;
     private String email;
+    private String cpf;
+    private String telephone;
+    private String password;
 
     @DBRef(lazy=true)
     private List<Post> posts = new ArrayList<>();
 
-    public User(String id, String name, String email) {
+    public User(String id, String name, String email, String cpf, String telephone, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.cpf = cpf;
+        this.telephone = telephone;
+        this.password = password;
     }
 }

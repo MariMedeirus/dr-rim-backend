@@ -2,6 +2,7 @@ package com.app.drrim.config;
 
 import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
+import com.app.drrim.dto.AuthorDTO;
 import com.app.drrim.repository.PostRepository;
 import com.app.drrim.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,11 @@ public class Instantiation implements CommandLineRunner {
         User bruno = new User(null, "Bruno Lima", "bruno.lima@example.com");
         User carla = new User(null, "Carla Mendes", "carla.mendes@example.com");
 
-        Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu férias", "Vou viajar para o Rio!", alice);
-        Post post2 = new Post(null, sdf.parse("19/03/2018"), "Boa noite", "Boa noite e que Deus abençoe!", bruno);
-
         userRepository.saveAll(Arrays.asList(alice, bruno, carla));
+
+        Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu férias", "Vou viajar para o Rio!", new AuthorDTO(alice));
+        Post post2 = new Post(null, sdf.parse("19/03/2018"), "Boa noite", "Boa noite e que Deus abençoe!", new AuthorDTO(bruno));
+
         postRepository.saveAll(Arrays.asList(post1, post2));
     }
 }

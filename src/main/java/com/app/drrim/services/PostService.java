@@ -29,4 +29,27 @@ public class PostService {
         obj.setId(null);
         return repo.save(obj);
     }
+
+    public void delete(String id) {
+        findById(id);
+        repo.deleteById(id);
+    }
+
+    private void updateData(Post newObj, Post obj) {
+        newObj.setDate(obj.getDate());
+        newObj.setTitle(obj.getTitle());
+        newObj.setBody(obj.getBody());
+        newObj.setAuthor(obj.getAuthor());
+        newObj.setComments(obj.getComments());
+    }
+
+    public Post update(Post obj) {
+        Post newObj = findById(obj.getId());
+        updateData(newObj, obj);
+        return repo.save(newObj);
+    }
+
+    public List<Post> findByTitle(String text){
+        return repo.findByTitleContainingIgnoreCase(text);
+    }
 }

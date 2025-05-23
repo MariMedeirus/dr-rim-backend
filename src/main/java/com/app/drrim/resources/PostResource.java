@@ -3,6 +3,7 @@ package com.app.drrim.resources;
 import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.UserDTO;
+import com.app.drrim.resources.util.URL;
 import com.app.drrim.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,4 +37,25 @@ public class PostResource {
         URI uri = URI.create("/posts/" + newObj.getId());
         return ResponseEntity.created(uri).body(newObj);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Post> update(@PathVariable String id, @RequestBody Post obj) {
+        obj.setId(id);
+        Post updatedObj = service.update(obj);
+        return ResponseEntity.ok().body(updatedObj);
+    }
+
+    @GetMapping("/titlesearch")
+    public ResponseEntity<List<Post>> findByName(@RequestParam(value="text", defaultValue="") String text){
+        text = URL.decodeParam(text);
+        List<Post> list = service.findByTitle(text);
+        return ResponseEntity.ok().body(list);
+    }
+
 }

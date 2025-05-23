@@ -2,18 +2,16 @@ package com.app.drrim.services;
 
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.LoginDTO;
-import com.app.drrim.dto.UserDTO;
 import com.app.drrim.repository.UserRepository;
+import com.app.drrim.services.exception.EmailAlreadyRegisteredException;
 import com.app.drrim.services.exception.LoginException;
 import com.app.drrim.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -34,6 +32,11 @@ public class UserService {
     }
 
     public User insert(User obj){
+        Optional<User> existingUser = repo.findByEmail(obj.getEmail());
+        if (existingUser.isPresent()) {
+            throw new EmailAlreadyRegisteredException("E-mail já cadastrado.");
+        }
+
         String encoder = this.password.encode(obj.getPassword());
         obj.setPassword(encoder);
         return repo.insert(obj);

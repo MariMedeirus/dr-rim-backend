@@ -8,6 +8,7 @@ import com.app.drrim.repository.UserRepository;
 import com.app.drrim.services.UserService;
 import com.app.drrim.services.exception.LoginException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,9 +39,13 @@ public class UserResource {
 
     @PostMapping
     public ResponseEntity<Void> insert(@RequestBody User obj) {
-        obj = service.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        try {
+            obj = service.insert(obj);
+            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+            return ResponseEntity.created(uri).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // ou BAD_REQUEST, conforme preferir
+        }
     }
 
 

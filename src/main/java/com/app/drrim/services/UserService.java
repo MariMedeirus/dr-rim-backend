@@ -8,6 +8,8 @@ import com.app.drrim.services.exception.LoginException;
 import com.app.drrim.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,6 +21,9 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
+    @Autowired
+    private PasswordEncoder password;
+
     public List<User> findAll(){
         return repo.findAll();
     }
@@ -29,7 +34,9 @@ public class UserService {
     }
 
     public User insert(User obj){
-       return repo.insert(obj);
+        String encoder = this.password.encode(obj.getPassword());
+        obj.setPassword(encoder);
+        return repo.insert(obj);
     }
 
     public void delete(String id){
@@ -48,12 +55,15 @@ public class UserService {
         newObj.setEmail(obj.getEmail());
         newObj.setCpf(obj.getCpf());
         newObj.setTelephone(obj.getTelephone());
-        newObj.setPassword(obj.getPassword());
+
+        if (obj.getPassword() != null && !obj.getPassword().isEmpty()) {
+            newObj.setPassword(password.encode(obj.getPassword()));
+        }
     }
 
     public User login(LoginDTO loginDTO) {
         return repo.findByEmail(loginDTO.getEmail())
-                .filter(user -> user.getPassword().equals(loginDTO.getPassword()))
+                .filter(user -> password.matches(loginDTO.getPassword(), user.getPassword()))
                 .orElseThrow(() -> new LoginException("Email ou senha inválidos"));
     }
 

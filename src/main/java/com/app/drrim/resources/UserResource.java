@@ -81,6 +81,12 @@ public class UserResource {
         }
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> findByEmail(@PathVariable String email) {
+        User obj = service.findByEmail(email);
+        return ResponseEntity.ok().body(obj);
+    }
+
 
 
 }

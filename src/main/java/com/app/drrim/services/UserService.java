@@ -70,5 +70,9 @@ public class UserService {
                 .orElseThrow(() -> new LoginException("Email ou senha inválidos"));
     }
 
+    public User findByEmail(String email) {
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado com o e-mail: " + email));
+    }
 
 }

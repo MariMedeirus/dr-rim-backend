@@ -2,6 +2,7 @@ package com.app.drrim.resources;
 
 import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
+import com.app.drrim.dto.CommentDTO;
 import com.app.drrim.dto.UserDTO;
 import com.app.drrim.resources.util.URL;
 import com.app.drrim.services.PostService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(value="/posts")
 public class PostResource {
@@ -56,6 +58,12 @@ public class PostResource {
         text = URL.decodeParam(text);
         List<Post> list = service.findByTitle(text);
         return ResponseEntity.ok().body(list);
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<Post> insertComment(@PathVariable String id, @RequestBody CommentDTO dto) {
+        Post updated = service.insertComment(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
 }

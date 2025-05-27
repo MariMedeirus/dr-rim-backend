@@ -1,13 +1,13 @@
 package com.app.drrim.services;
 
 import com.app.drrim.domain.Post;
-import com.app.drrim.domain.User;
+import com.app.drrim.dto.CommentDTO;
 import com.app.drrim.repository.PostRepository;
-import com.app.drrim.repository.UserRepository;
 import com.app.drrim.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -51,5 +51,13 @@ public class PostService {
 
     public List<Post> findByTitle(String text){
         return repo.findByTitleContainingIgnoreCase(text);
+    }
+
+    public Post insertComment(String postId, CommentDTO dto) {
+        Post post = repo.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post não encontrado"));
+
+        post.getComments().add(dto);
+        return repo.save(post);
     }
 }

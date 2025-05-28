@@ -15,6 +15,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -87,6 +89,16 @@ public class UserResource {
         return ResponseEntity.ok().body(obj);
     }
 
-
+    @PutMapping("/{id}/addPost")
+    public ResponseEntity<?> addPostToUser(@PathVariable String id, @RequestBody Map<String, String> body) {
+        try {
+            service.addPostToUser(id, body.get("postId"));
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Post não encontrado.");
+        }
+    }
 
 }

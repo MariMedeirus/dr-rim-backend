@@ -1,7 +1,9 @@
 package com.app.drrim.services;
 
+import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.LoginDTO;
+import com.app.drrim.repository.PostRepository;
 import com.app.drrim.repository.UserRepository;
 import com.app.drrim.services.exception.EmailAlreadyRegisteredException;
 import com.app.drrim.services.exception.LoginException;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -18,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserRepository repo;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Autowired
     private PasswordEncoder password;
@@ -73,6 +79,17 @@ public class UserService {
     public User findByEmail(String email) {
         return repo.findByEmail(email)
                 .orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado com o e-mail: " + email));
+    }
+
+    public void addPostToUser(String userId, String postId) {
+        User user = repo.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com id: " + userId));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post não encontrado com id: " + postId));
+
+        user.getPosts().add(post);
+        repo.save(user);
     }
 
 }

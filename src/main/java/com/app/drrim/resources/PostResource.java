@@ -4,6 +4,7 @@ import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.CommentDTO;
 import com.app.drrim.dto.UserDTO;
+import com.app.drrim.repository.UserRepository;
 import com.app.drrim.resources.util.URL;
 import com.app.drrim.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;

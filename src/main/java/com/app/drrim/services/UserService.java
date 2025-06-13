@@ -1,5 +1,6 @@
 package com.app.drrim.services;
 
+import com.app.drrim.domain.Medication;
 import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.LoginDTO;
@@ -90,6 +91,14 @@ public class UserService {
 
         user.getPosts().add(post);
         repo.save(user);
+    }
+
+    public User insertMedication(String id, Medication medication) {
+        User user = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        user.getMedicines().add(medication);
+        return repo.save(user);
     }
 
 }

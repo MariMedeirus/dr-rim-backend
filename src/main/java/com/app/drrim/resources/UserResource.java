@@ -1,10 +1,10 @@
 package com.app.drrim.resources;
 
+import com.app.drrim.domain.Medication;
 import com.app.drrim.domain.Post;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.LoginDTO;
 import com.app.drrim.dto.UserDTO;
-import com.app.drrim.repository.UserRepository;
 import com.app.drrim.services.UserService;
 import com.app.drrim.services.exception.LoginException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class UserResource {
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
             return ResponseEntity.created(uri).build();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // ou BAD_REQUEST, conforme preferir
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
@@ -101,4 +101,10 @@ public class UserResource {
         }
     }
 
+    @PostMapping("/{id}/medicines")
+    public ResponseEntity<User> insertMedication(@PathVariable String id, @RequestBody Medication medication) {
+            User updated = service.insertMedication(id, medication);
+            return ResponseEntity.ok(updated);
+        }
+    
 }

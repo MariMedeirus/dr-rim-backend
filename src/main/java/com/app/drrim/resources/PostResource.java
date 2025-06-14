@@ -21,6 +21,7 @@ public class PostResource {
 
     @Autowired
     private PostService service;
+    
 
     @GetMapping
     public ResponseEntity<List<Post>> findAll(){

@@ -2,6 +2,7 @@ package com.app.drrim.services;
 
 import com.app.drrim.domain.Medication;
 import com.app.drrim.domain.Post;
+import com.app.drrim.domain.Scheduling;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.LoginDTO;
 import com.app.drrim.repository.PostRepository;
@@ -98,6 +99,14 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         user.getMedicines().add(medication);
+        return repo.save(user);
+    }
+
+    public User insertScheduling(String id, Scheduling scheduling) {
+        User user = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        user.getScheduling().add(scheduling);
         return repo.save(user);
     }
 

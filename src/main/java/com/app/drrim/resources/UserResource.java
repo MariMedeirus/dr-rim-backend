@@ -2,6 +2,7 @@ package com.app.drrim.resources;
 
 import com.app.drrim.domain.Medication;
 import com.app.drrim.domain.Post;
+import com.app.drrim.domain.Scheduling;
 import com.app.drrim.domain.User;
 import com.app.drrim.dto.LoginDTO;
 import com.app.drrim.dto.UserDTO;
@@ -103,8 +104,14 @@ public class UserResource {
 
     @PostMapping("/{id}/medicines")
     public ResponseEntity<User> insertMedication(@PathVariable String id, @RequestBody Medication medication) {
-            User updated = service.insertMedication(id, medication);
-            return ResponseEntity.ok(updated);
-        }
-    
+        User updated = service.insertMedication(id, medication);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PostMapping("/{id}/scheduling")
+    public ResponseEntity<User> insertScheduling(@PathVariable String id, @RequestBody Scheduling scheduling) {
+        User updated = service.insertScheduling(id, scheduling);
+        return ResponseEntity.ok(updated);
+    }
+
 }

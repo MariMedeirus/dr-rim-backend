@@ -1,17 +1,16 @@
 package com.app.drrim.domain;
 
-import com.app.drrim.enums.MedicinesEnum;
 import com.app.drrim.enums.SchedulingEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Date;
 
+@Builder
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
@@ -19,6 +18,9 @@ import java.util.Date;
 public class Scheduling implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @Builder.Default
+    private String id = new ObjectId().toHexString();
 
     private String doctorName;
     private SchedulingEnum speciality;
@@ -29,4 +31,5 @@ public class Scheduling implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime time;
     private String note;
+
 }

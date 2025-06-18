@@ -114,7 +114,7 @@ public class UserResource {
         }
     }
 
-    @PostMapping("/{id}/medicines")
+    @PostMapping("/{id}/medication")
     public ResponseEntity<User> insertMedication(@PathVariable String id, @RequestBody Medication medication) {
         User updated = service.insertMedication(id, medication);
         return ResponseEntity.ok(updated);
@@ -124,6 +124,19 @@ public class UserResource {
     public ResponseEntity<User> insertScheduling(@PathVariable String id, @RequestBody Scheduling scheduling) {
         User updated = service.insertScheduling(id, scheduling);
         return ResponseEntity.ok(updated);
+    }
+
+
+    @DeleteMapping("/{userId}/medication/{medicationId}")
+    public ResponseEntity<Void> deleteMedication(@PathVariable String userId, @PathVariable String medicationId) {
+        service.deleteMedication(userId, medicationId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{userId}/scheduling/{schedulingId}")
+    public ResponseEntity<Void> deleteScheduling(@PathVariable String userId, @PathVariable String schedulingId) {
+        service.deleteScheduling(userId, schedulingId);
+        return ResponseEntity.noContent().build();
     }
 
 }

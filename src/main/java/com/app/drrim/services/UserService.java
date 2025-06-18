@@ -110,7 +110,7 @@ public class UserService {
         User user = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        user.getMedicines().add(medication);
+        user.getMedication().add(medication);
         return repo.save(user);
     }
 
@@ -121,5 +121,22 @@ public class UserService {
         user.getScheduling().add(scheduling);
         return repo.save(user);
     }
+
+    public void deleteMedication(String userId, String medicationId){
+        User user = repo.findById(userId).
+                orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
+        if (!user.getMedication().removeIf(med -> medicationId.equals(med.getId())))
+            throw new RuntimeException("Medication não encontrada com id: " + medicationId);
+        repo.save(user);
+    }
+
+    public void deleteScheduling(String userId, String schedulingId) {
+        User user = repo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        if (!user.getScheduling().removeIf(s -> schedulingId.equals(s.getId())))
+            throw new RuntimeException("Scheduling não encontrado com id: " + schedulingId);
+        repo.save(user);
+    }
+
 
 }

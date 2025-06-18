@@ -31,7 +31,7 @@ public class User implements Serializable {
     @DBRef(lazy = true)
     private List<Gallery> gallery = new ArrayList<>();
 
-    private List<Medication> medicines = new ArrayList<>();
+    private List<Medication> medication = new ArrayList<>();
     private List<Scheduling> scheduling = new ArrayList<>();
 
     public User(String id, String name, String email, String cpf, String telephone, String password) {

@@ -114,16 +114,50 @@ public class UserResource {
         }
     }
 
-    @PostMapping("/{id}/medicines")
+    @PostMapping("/{id}/medication")
     public ResponseEntity<User> insertMedication(@PathVariable String id, @RequestBody Medication medication) {
         User updated = service.insertMedication(id, medication);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/{userId}/medication/{medicationId}")
+    public ResponseEntity<Medication> findMedication(@PathVariable String userId, @PathVariable String medicationId) {
+        Medication medication = service.findMedication(userId, medicationId);
+        return ResponseEntity.ok(medication);
+    }
+
+    @GetMapping("/{userId}/medication")
+    public ResponseEntity<List<Medication>> findAllMedications(@PathVariable String userId) {
+        return ResponseEntity.ok(service.findAllMedications(userId));
+    }
+
+    @DeleteMapping("/{userId}/medication/{medicationId}")
+    public ResponseEntity<Void> deleteMedication(@PathVariable String userId, @PathVariable String medicationId) {
+        service.deleteMedication(userId, medicationId);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/scheduling")
     public ResponseEntity<User> insertScheduling(@PathVariable String id, @RequestBody Scheduling scheduling) {
         User updated = service.insertScheduling(id, scheduling);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/{userId}/scheduling/{schedulingId}")
+    public ResponseEntity<Scheduling> findScheduling(@PathVariable String userId, @PathVariable String schedulingId) {
+        Scheduling scheduling = service.findScheduling(userId, schedulingId);
+        return ResponseEntity.ok(scheduling);
+    }
+
+    @GetMapping("/{userId}/scheduling")
+    public ResponseEntity<List<Scheduling>> findAllSchedulings(@PathVariable String userId) {
+        return ResponseEntity.ok(service.findAllSchedulings(userId));
+    }
+
+    @DeleteMapping("/{userId}/scheduling/{schedulingId}")
+    public ResponseEntity<Void> deleteScheduling(@PathVariable String userId, @PathVariable String schedulingId) {
+        service.deleteScheduling(userId, schedulingId);
+        return ResponseEntity.noContent().build();
     }
 
 }

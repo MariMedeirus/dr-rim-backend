@@ -27,6 +27,10 @@ public class User implements Serializable {
 
     @DBRef(lazy=true)
     private List<Post> posts = new ArrayList<>();
+
+    @DBRef(lazy = true)
+    private List<Gallery> gallery = new ArrayList<>();
+
     private List<Medication> medicines = new ArrayList<>();
     private List<Scheduling> scheduling = new ArrayList<>();
 

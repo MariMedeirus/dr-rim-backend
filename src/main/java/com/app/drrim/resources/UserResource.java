@@ -102,6 +102,18 @@ public class UserResource {
         }
     }
 
+    @PutMapping("/{id}/addGallery")
+    public ResponseEntity<?> addGalleryToUser(@PathVariable String id, @RequestBody Map<String, String> body) {
+        try {
+            service.addGalleryToUser(id, body.get("galleryId"));
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Post não encontrado.");
+        }
+    }
+
     @PostMapping("/{id}/medicines")
     public ResponseEntity<User> insertMedication(@PathVariable String id, @RequestBody Medication medication) {
         User updated = service.insertMedication(id, medication);

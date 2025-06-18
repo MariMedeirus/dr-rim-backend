@@ -1,10 +1,8 @@
 package com.app.drrim.services;
 
-import com.app.drrim.domain.Medication;
-import com.app.drrim.domain.Post;
-import com.app.drrim.domain.Scheduling;
-import com.app.drrim.domain.User;
+import com.app.drrim.domain.*;
 import com.app.drrim.dto.LoginDTO;
+import com.app.drrim.repository.GalleryRepository;
 import com.app.drrim.repository.PostRepository;
 import com.app.drrim.repository.UserRepository;
 import com.app.drrim.services.exception.EmailAlreadyRegisteredException;
@@ -26,6 +24,9 @@ public class UserService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private GalleryRepository galleryRepository;
 
     @Autowired
     private PasswordEncoder password;
@@ -91,6 +92,17 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Post não encontrado com id: " + postId));
 
         user.getPosts().add(post);
+        repo.save(user);
+    }
+
+    public void addGalleryToUser(String userId, String galleryId) {
+        User user = repo.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com id: " + userId));
+
+        Gallery gallery = galleryRepository.findById(galleryId)
+                .orElseThrow(() -> new IllegalArgumentException("Post não encontrado com id: " + galleryId));
+
+        user.getGallery().add(gallery);
         repo.save(user);
     }
 

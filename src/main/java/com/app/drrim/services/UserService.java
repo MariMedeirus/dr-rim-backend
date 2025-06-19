@@ -114,6 +114,30 @@ public class UserService {
         return repo.save(user);
     }
 
+    public Medication findMedication(String userId, String medicationId) {
+        User user = repo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        return user.getMedication().stream()
+                .filter(med -> medicationId.equals(med.getId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Medicação não encontrada com id: " + medicationId));
+    }
+
+    public List<Medication> findAllMedications(String userId) {
+        User user = repo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return user.getMedication();
+    }
+
+    public void deleteMedication(String userId, String medicationId){
+        User user = repo.findById(userId).
+                orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
+        if (!user.getMedication().removeIf(med -> medicationId.equals(med.getId())))
+            throw new RuntimeException("Medicação não encontrada com id: " + medicationId);
+        repo.save(user);
+    }
+
     public User insertScheduling(String id, Scheduling scheduling) {
         User user = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -122,19 +146,27 @@ public class UserService {
         return repo.save(user);
     }
 
-    public void deleteMedication(String userId, String medicationId){
-        User user = repo.findById(userId).
-                orElseThrow(()-> new RuntimeException("Usuário não encontrado"));
-        if (!user.getMedication().removeIf(med -> medicationId.equals(med.getId())))
-            throw new RuntimeException("Medication não encontrada com id: " + medicationId);
-        repo.save(user);
+    public Scheduling findScheduling(String userId, String schedulingId) {
+        User user = repo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        return user.getScheduling().stream()
+                .filter(s -> schedulingId.equals(s.getId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado com id: " + schedulingId));
+    }
+
+    public List<Scheduling> findAllSchedulings(String userId) {
+        User user = repo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return user.getScheduling();
     }
 
     public void deleteScheduling(String userId, String schedulingId) {
         User user = repo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         if (!user.getScheduling().removeIf(s -> schedulingId.equals(s.getId())))
-            throw new RuntimeException("Scheduling não encontrado com id: " + schedulingId);
+            throw new RuntimeException("Agendamento não encontrado com id: " + schedulingId);
         repo.save(user);
     }
 
